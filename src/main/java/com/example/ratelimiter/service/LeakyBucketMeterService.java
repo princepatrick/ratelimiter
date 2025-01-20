@@ -1,6 +1,7 @@
 package com.example.ratelimiter.service;
 
 import com.example.ratelimiter.algorithm.LeakyBucketMeter;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.ratelimiter.util.Token;
@@ -13,6 +14,12 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 @Component
 public class LeakyBucketMeterService {
+
+    @PostConstruct
+    public void init() {
+        System.out.println("LeakyBucketMeterService initialized");
+    }
+
 
     @Autowired
     public LeakyBucketMeter leakyBucketMeter;

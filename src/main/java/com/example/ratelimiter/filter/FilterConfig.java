@@ -10,7 +10,12 @@ import javax.servlet.FilterRegistration;
 @Configuration
 public class FilterConfig {
     @Bean
-    public FilterRegistrationBean<LeakyBucketMeterFilter> leakyBucketMeterFilterFilterRegistration( LeakyBucketMeterFilter filter ){
-
+    public FilterRegistrationBean<LeakyBucketMeterFilter> leakyBucketMeterFilterRegistration(LeakyBucketMeterFilter filter) {
+        FilterRegistrationBean<LeakyBucketMeterFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(filter);
+        registration.addUrlPatterns("/*");
+        registration.setName("leakyBucketMeterFilter");
+//        registration.setOrder(1);
+        return registration;
     }
 }

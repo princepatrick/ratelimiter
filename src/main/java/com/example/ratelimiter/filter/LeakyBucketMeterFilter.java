@@ -1,25 +1,27 @@
 package com.example.ratelimiter.filter;
 
 import com.example.ratelimiter.service.LeakyBucketMeterService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 
-@Slf4j
 @Component
 @ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketmeter")
 public class LeakyBucketMeterFilter implements Filter {
-
-    public LeakyBucketMeterFilter() {
-        System.out.println("LeakyBucketMeterFilter is created");
-    }
 
     @Autowired
     public LeakyBucketMeterService leakyBucketMeterService;
@@ -27,7 +29,15 @@ public class LeakyBucketMeterFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        System.out.println("LeakyBucketMeterFilter is initialized!!");
+    }
 
+    @Value("${filter.type}")
+    private String filterType;
+
+    @PostConstruct
+    public void checkConfig(){
+        System.out.println( "The filter type is" + filterType );
     }
 
     @Override
