@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfig {
     @Bean
-    public FilterRegistrationBean<LeakyBucketQueueFilter> leakyBucketMeterFilterRegistration(LeakyBucketQueueFilter filter) {
-        FilterRegistrationBean<LeakyBucketQueueFilter> registration = new FilterRegistrationBean<>();
+    public FilterRegistrationBean<LeakyBucketMeterFilter> leakyBucketMeterFilterRegistration(LeakyBucketMeterFilter filter) {
+        FilterRegistrationBean<LeakyBucketMeterFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(filter);
         registration.addUrlPatterns("/*");
         registration.setName("leakyBucketMeterFilter");

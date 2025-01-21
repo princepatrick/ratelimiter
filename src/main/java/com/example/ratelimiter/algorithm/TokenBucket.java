@@ -1,6 +1,7 @@
 package com.example.ratelimiter.algorithm;
 
 import com.example.ratelimiter.util.BucketUtil;
+import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import com.example.ratelimiter.util.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,19 @@ public class TokenBucket {
 
     int capacity;
     Map<String, PriorityBlockingQueue<Token>> ipBasedTokenBucket;
+    RateLimitingAlgorithm algorithm;
 
     @Autowired
     public BucketUtil bucketUtil;
 
-    public TokenBucket( int threshold ){
+    public TokenBucket(int threshold, RateLimitingAlgorithm algorithm ){
         this.capacity = threshold;
         this.ipBasedTokenBucket = Collections.synchronizedMap(new HashMap<>());
+        this.algorithm = algorithm;
     }
 
     public boolean registerIp( String ip ){
-        return bucketUtil.registerIp( ip, this.ipBasedTokenBucket, this.capacity, true );
+        return bucketUtil.registerIp( ip, ipBasedTokenBucket, this.capacity, algorithm );
     }
 
     public void deregisterIp( String ip ){

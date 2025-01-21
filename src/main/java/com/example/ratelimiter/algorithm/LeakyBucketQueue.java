@@ -1,6 +1,7 @@
 package com.example.ratelimiter.algorithm;
 
 import com.example.ratelimiter.util.BucketUtil;
+import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import com.example.ratelimiter.util.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,17 +15,19 @@ public class LeakyBucketQueue {
 
     int capacity;
     Map<String, PriorityBlockingQueue<Token>> ipBasedLeakyBucket;
+    RateLimitingAlgorithm algorithm;
 
     @Autowired
     BucketUtil bucketUtil;
 
-    public LeakyBucketQueue(int capacity ){
+    public LeakyBucketQueue(int capacity, RateLimitingAlgorithm algorithm ){
         this.capacity = capacity;
         this.ipBasedLeakyBucket = Collections.synchronizedMap(new HashMap<>());
+        this.algorithm = algorithm;
     }
 
     public boolean registerIp( String ip ){
-        return bucketUtil.registerIp( ip, ipBasedLeakyBucket, capacity, false );
+        return bucketUtil.registerIp( ip, ipBasedLeakyBucket, capacity, algorithm );
     }
 
     public void deRegisterIp( String ip ){

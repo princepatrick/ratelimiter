@@ -40,7 +40,6 @@ public class LeakyBucketQueueService {
             queue.add( new Token( UUID.randomUUID().toString(), LocalDateTime.now() ) );
         }
 
-
     }
 
 }

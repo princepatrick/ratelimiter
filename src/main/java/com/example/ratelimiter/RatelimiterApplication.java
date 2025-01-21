@@ -1,6 +1,8 @@
 package com.example.ratelimiter;
 
+import com.example.ratelimiter.algorithm.LeakyBucketMeter;
 import com.example.ratelimiter.algorithm.TokenBucket;
+import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +21,17 @@ public class RatelimiterApplication {
 
 	@Bean
 	public TokenBucket tokenBucketAlgorithm(){
-		return new TokenBucket(5);
+		return new TokenBucket(5, RateLimitingAlgorithm.TOKEN_BUCKET );
 	}
 
 	@Bean
-	public LeakyBucketQueue leakyBucketMeterAlgorithm(){
-		return new LeakyBucketQueue(10);
+	public LeakyBucketQueue leakyBucketQueueAlgorithm(){
+		return new LeakyBucketQueue(10, RateLimitingAlgorithm.LEAKY_BUCKET_QUEUE );
+	}
+
+	@Bean
+	public LeakyBucketMeter leakyBucketMeterAlgorithm(){
+		return new LeakyBucketMeter( 5, RateLimitingAlgorithm.LEAKY_BUCKET_METER );
 	}
 
 }

@@ -18,11 +18,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-@ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketmeter")
+@ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketqueue")
 public class LeakyBucketQueueFilter implements Filter {
 
     @Autowired
-    public LeakyBucketQueueService leakyBucketMeterService;
+    public LeakyBucketQueueService leakyBucketQueueService;
 
 
     @Override
@@ -44,7 +44,7 @@ public class LeakyBucketQueueFilter implements Filter {
             String ipAddress = servletRequest.getRemoteHost();
             System.out.println( "The request ip address is " + ipAddress );
 
-            leakyBucketMeterService.checkValidity( ipAddress );
+            leakyBucketQueueService.checkValidity( ipAddress );
 
             System.out.println("The request is within limit and is executed");
         } catch ( RuntimeException e ){
