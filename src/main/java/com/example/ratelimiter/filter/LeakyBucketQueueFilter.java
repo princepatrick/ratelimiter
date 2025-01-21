@@ -1,12 +1,10 @@
 package com.example.ratelimiter.filter;
 
-import com.example.ratelimiter.service.LeakyBucketMeterService;
+import com.example.ratelimiter.service.LeakyBucketQueueService;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketmeter")
-public class LeakyBucketMeterFilter implements Filter {
+public class LeakyBucketQueueFilter implements Filter {
 
     @Autowired
-    public LeakyBucketMeterService leakyBucketMeterService;
+    public LeakyBucketQueueService leakyBucketMeterService;
 
 
     @Override

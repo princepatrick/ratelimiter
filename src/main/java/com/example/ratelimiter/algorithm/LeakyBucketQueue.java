@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class LeakyBucketMeter {
+public class LeakyBucketQueue {
 
     int capacity;
     Map<String, PriorityBlockingQueue<Token>> ipBasedLeakyBucket;
@@ -18,7 +18,7 @@ public class LeakyBucketMeter {
     @Autowired
     BucketUtil bucketUtil;
 
-    public LeakyBucketMeter( int capacity ){
+    public LeakyBucketQueue(int capacity ){
         this.capacity = capacity;
         this.ipBasedLeakyBucket = Collections.synchronizedMap(new HashMap<>());
     }

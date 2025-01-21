@@ -1,6 +1,6 @@
 package com.example.ratelimiter.service;
 
-import com.example.ratelimiter.algorithm.LeakyBucketMeter;
+import com.example.ratelimiter.algorithm.LeakyBucketQueue;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.PriorityBlockingQueue;
 
 @Component
-public class LeakyBucketMeterService {
+public class LeakyBucketQueueService {
 
     @PostConstruct
     public void init() {
@@ -22,17 +22,17 @@ public class LeakyBucketMeterService {
 
 
     @Autowired
-    public LeakyBucketMeter leakyBucketMeter;
+    public LeakyBucketQueue leakyBucketQueue;
 
     public void checkValidity( String ipAddress ) {
 
-        leakyBucketMeter.registerIp( ipAddress );
+        leakyBucketQueue.registerIp( ipAddress );
 
-        Map< String, PriorityBlockingQueue<Token>> leakyBucketQueue = leakyBucketMeter.getIpBasedLeakyBucket();
+        Map< String, PriorityBlockingQueue<Token>> leakyBucketQueue = this.leakyBucketQueue.getIpBasedLeakyBucket();
 
         PriorityBlockingQueue<Token> queue = leakyBucketQueue.get(ipAddress);
 
-        if( queue.size() == leakyBucketMeter.getCapacity() ){
+        if( queue.size() == this.leakyBucketQueue.getCapacity() ){
             System.out.println("The bucket is filled with older requests!! The rate limiter API is reached the capacity");
             throw new RuntimeException("The rate limit has been reached!!");
         } else {
