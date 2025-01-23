@@ -5,6 +5,8 @@ import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class LeakyBucketMeter {
@@ -21,6 +23,7 @@ public class LeakyBucketMeter {
         this.capacity = capacity;
         this.currentLevel = 0;
         this.algorithm = algorithm;
+        this.ipBasedLeakyBucketMeter = Collections.synchronizedMap(new HashMap<>());
     }
 
     public boolean registerIp( String ipAddress ){
