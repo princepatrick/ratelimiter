@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfig {
     @Bean
-    public FilterRegistrationBean<LeakyBucketMeterFilter> leakyBucketMeterFilterRegistration(LeakyBucketMeterFilter filter) {
-        FilterRegistrationBean<LeakyBucketMeterFilter> registration = new FilterRegistrationBean<>();
+    public FilterRegistrationBean<FixedWindowCounterFilter> leakyBucketMeterFilterRegistration(FixedWindowCounterFilter filter) {
+        FilterRegistrationBean<FixedWindowCounterFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(filter);
         registration.addUrlPatterns("/*");
-        registration.setName("leakyBucketMeterFilter");
+        registration.setName("fixedWindowCounter");
 //        registration.setOrder(1);
         return registration;
     }

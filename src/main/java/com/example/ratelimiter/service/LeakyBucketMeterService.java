@@ -14,18 +14,20 @@ public class LeakyBucketMeterService {
 
     public void checkValidity( String ipAddress ){
 
-        leakyBucketMeter.registerIp( ipAddress );
+        boolean justRegistered = leakyBucketMeter.registerIp( ipAddress );
 
         Map<String, Integer> ipBasedLeakyBucketMeter = leakyBucketMeter.getIpBasedLeakyBucketMeter();
 
         int currentFilledRequests = ipBasedLeakyBucketMeter.get(ipAddress);
 
-        if( currentFilledRequests < leakyBucketMeter.getCapacity() ){
+        if( currentFilledRequests < leakyBucketMeter.getCapacity()
+                || (justRegistered && currentFilledRequests == leakyBucketMeter.getCapacity()  ) ){
             System.out.println("The number of requests have not reached the limit. The service call is permitted!!");
             ipBasedLeakyBucketMeter.put( ipAddress, currentFilledRequests + 1 );
             System.out.println("The current requests after the recent update is " + currentFilledRequests + 1 );
         } else {
             System.out.println("The bucket is filled with older requests!! The rate limiter API has reached the capacity");
+            throw new RuntimeException("The rate limit has been reached!!");
         }
 
     }

@@ -20,19 +20,19 @@ public class LeakyBucketQueueService {
         System.out.println("LeakyBucketMeterService initialized");
     }
 
-
     @Autowired
     public LeakyBucketQueue leakyBucketQueue;
 
     public void checkValidity( String ipAddress ) {
 
-        leakyBucketQueue.registerIp( ipAddress );
+        boolean justRegistered = leakyBucketQueue.registerIp( ipAddress );
 
         Map< String, PriorityBlockingQueue<Token>> leakyBucketQueue = this.leakyBucketQueue.getIpBasedLeakyBucket();
 
         PriorityBlockingQueue<Token> queue = leakyBucketQueue.get(ipAddress);
 
-        if( queue.size() == this.leakyBucketQueue.getCapacity() ){
+        if( queue.size() > this.leakyBucketQueue.getCapacity()
+                || ( !justRegistered && queue.size() == this.leakyBucketQueue.getCapacity()) ){
             System.out.println("The bucket is filled with older requests!! The rate limiter API is reached the capacity");
             throw new RuntimeException("The rate limit has been reached!!");
         } else {

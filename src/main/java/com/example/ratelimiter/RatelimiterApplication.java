@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import com.example.ratelimiter.algorithm.LeakyBucketQueue;
+import com.example.ratelimiter.algorithm.FixedWindowCounter;
 
 @SpringBootApplication
 @ComponentScan({"com.example.ratelimiter"})
@@ -32,6 +33,11 @@ public class RatelimiterApplication {
 	@Bean
 	public LeakyBucketMeter leakyBucketMeterAlgorithm(){
 		return new LeakyBucketMeter( 5, RateLimitingAlgorithm.LEAKY_BUCKET_METER );
+	}
+
+	@Bean
+	public FixedWindowCounter fixedWindowCounterAlgorithm(){
+		return new FixedWindowCounter( 3, RateLimitingAlgorithm.FIXED_WINDOW_COUNTER );
 	}
 
 }

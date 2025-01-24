@@ -3,9 +3,8 @@ package com.example.ratelimiter.util;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
 @Component
@@ -63,6 +62,23 @@ public class BucketUtil {
                     Map<String, Integer> ipBasedLeakyBucketMeter = ( Map<String, Integer> ) ipBasedDataStruct;
                     System.out.println("Increment or define the map with the first process");
                     ipBasedLeakyBucketMeter.put( ip, 1 );
+
+                    break;
+
+                case FIXED_WINDOW_COUNTER:
+
+                    Map< String, Map<String, Integer>> ipBasedFixedWindowCounter = ( Map<String, Map<String, Integer>>) ipBasedDataStruct;
+
+                    ipBasedFixedWindowCounter.put( ip, Collections.synchronizedMap( new HashMap<>()));
+
+                    System.out.println("Retrieving the current time and finding the fixed window (current minute)");
+                    LocalTime currentTime = LocalTime.now();
+                    int hour = currentTime.getHour();
+                    int minute = currentTime.getMinute();
+                    String time = String.valueOf( hour ) + ":" + String.valueOf( minute );
+
+                    System.out.println("Inserting into the new ipaddress with the new timestamp (current minute)");
+                    ipBasedFixedWindowCounter.get( ip ).put( time, 1 );
 
                     break;
 
