@@ -42,5 +42,9 @@ public class RatelimiterApplication {
 		return new SlidingWindowLog( 5, 60, RateLimitingAlgorithm.SLIDING_WINDOW_LOG );
 	}
 
+	@Bean
+	public SlidingWindowCounter slidingWindowCounterAlgorithm(){
+		return new SlidingWindowCounter( 2, RateLimitingAlgorithm.SLIDING_WINDOW_COUNTER );
+	}
 
 }

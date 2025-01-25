@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -98,6 +99,19 @@ public class BucketUtil {
                     LocalDateTime currentDateTime = LocalDateTime.now();
                     System.out.println("Inserting into the local date time queue with the current LocalDateTime value");
                     localDateTimeQueue.add(currentDateTime);
+
+                    break;
+
+                case SLIDING_WINDOW_COUNTER:
+
+                    Map<String, Map<Long, Integer>> ipBasedSlidingWindowCounter = ( Map<String, Map<Long, Integer>>) ipBasedDataStruct;
+                    ipBasedSlidingWindowCounter.put( ip, Collections.synchronizedMap( new HashMap<>() ) );
+
+                    System.out.println("Retrieving the current window(minute) from the current time");
+                    Long currentMinute = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) / 60;
+
+                    System.out.println("Inserting the local date time window (minute) into the queue");
+                    ipBasedSlidingWindowCounter.get( ip ).put( currentMinute, 1 );
 
                     break;
 
