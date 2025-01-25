@@ -68,4 +68,12 @@ public class TokenBucket {
 
     }
 
+    public int getCapacity(){
+        return capacity;
+    }
+
+    public Map<String, PriorityBlockingQueue<Token>> getIpBasedTokenBucket(){
+        return ipBasedTokenBucket;
+    }
+
 }

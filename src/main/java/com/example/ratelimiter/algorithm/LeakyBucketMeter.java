@@ -15,10 +15,8 @@ public class LeakyBucketMeter {
     @Autowired
     public BucketUtil bucketUtil;
 
-    @Getter
     int capacity;
     int currentLevel;
-    @Getter
     Map<String, Integer> ipBasedLeakyBucketMeter;
     RateLimitingAlgorithm algorithm;
 
@@ -65,6 +63,14 @@ public class LeakyBucketMeter {
                 }
             }
         }
+    }
+
+    public int getCapacity(){
+        return capacity;
+    }
+
+    public Map<String, Integer> getIpBasedLeakyBucketMeter(){
+        return ipBasedLeakyBucketMeter;
     }
 
 }

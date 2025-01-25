@@ -33,6 +33,16 @@ public class BucketUtil {
                     }
             );
 
+            PriorityBlockingQueue<LocalDateTime> localDateTimeQueue = new PriorityBlockingQueue<>( capacity,
+                    new Comparator<LocalDateTime>(){
+                        @Override
+                        public int compare( LocalDateTime time1, LocalDateTime time2 ){
+
+                            return time1.compareTo(time2);
+                        }
+                    }
+            );
+
 
             switch( algorithm ){
                 case TOKEN_BUCKET :
@@ -79,6 +89,15 @@ public class BucketUtil {
 
                     System.out.println("Inserting into the new ipaddress with the new timestamp (current minute)");
                     ipBasedFixedWindowCounter.get( ip ).put( time, 1 );
+
+                    break;
+
+                case SLIDING_WINDOW_LOG:
+
+                    Map< String, PriorityBlockingQueue<LocalDateTime>> ipBasedSlidingWindowLog = ( Map<String, PriorityBlockingQueue<LocalDateTime>> ) ipBasedDataStruct ;
+                    LocalDateTime currentDateTime = LocalDateTime.now();
+                    System.out.println("Inserting into the local date time queue with the current LocalDateTime value");
+                    localDateTimeQueue.add(currentDateTime);
 
                     break;
 

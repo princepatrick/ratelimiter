@@ -21,7 +21,7 @@ public class TokenBucketService {
 
         tokenBucket.registerIp(ipAddress);
 
-        Map<String, PriorityBlockingQueue<Token>> ipBasedTokenBucket = tokenBucket.getIpBasedTokenBucker();
+        Map<String, PriorityBlockingQueue<Token>> ipBasedTokenBucket = tokenBucket.getIpBasedTokenBucket();
 
         if( ipBasedTokenBucket.containsKey(ipAddress) ){
 

@@ -14,9 +14,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 public class LeakyBucketQueue {
 
-    @Getter
     int capacity;
-    @Getter
     Map<String, PriorityBlockingQueue<Token>> ipBasedLeakyBucket;
     RateLimitingAlgorithm algorithm;
 
@@ -56,6 +54,14 @@ public class LeakyBucketQueue {
                 }
             }
         }
+    }
+
+    public int getCapacity(){
+        return capacity;
+    }
+
+    public Map<String, PriorityBlockingQueue<Token>> getIpBasedLeakyBucket(){
+        return ipBasedLeakyBucket;
     }
 
 }

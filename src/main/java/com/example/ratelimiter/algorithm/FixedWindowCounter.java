@@ -21,9 +21,8 @@ public class FixedWindowCounter {
     @Autowired
     public BucketUtil bucketUtil;
 
-    @Getter
+
     int windowCapacity;
-    @Getter
     Map<String, Map<String, Integer>> ipBasedFixedWindowCounter;
     RateLimitingAlgorithm algorithm;
 
@@ -39,6 +38,14 @@ public class FixedWindowCounter {
 
     public void deRegisterIp(String ipAddress) {
         bucketUtil.deRegisterIp( ipAddress, ipBasedFixedWindowCounter );
+    }
+
+    public int getWindowCapacity(){
+        return windowCapacity;
+    }
+
+    public Map<String, Map<String, Integer>> getIpBasedFixedWindowCounter(){
+        return getIpBasedFixedWindowCounter();
     }
 
 }
