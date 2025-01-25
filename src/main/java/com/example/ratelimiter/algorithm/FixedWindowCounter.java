@@ -2,6 +2,7 @@ package com.example.ratelimiter.algorithm;
 
 import com.example.ratelimiter.util.BucketUtil;
 import com.example.ratelimiter.util.RateLimitingAlgorithm;
+import lombok.Getter;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,9 @@ public class FixedWindowCounter {
     @Autowired
     public BucketUtil bucketUtil;
 
+    @Getter
     int windowCapacity;
+    @Getter
     Map<String, Map<String, Integer>> ipBasedFixedWindowCounter;
     RateLimitingAlgorithm algorithm;
 
@@ -37,15 +40,5 @@ public class FixedWindowCounter {
     public void deRegisterIp(String ipAddress) {
         bucketUtil.deRegisterIp( ipAddress, ipBasedFixedWindowCounter );
     }
-
-    public Map< String, Map<String, Integer>> getIpBasedFixedWindowCounter(){
-        return ipBasedFixedWindowCounter;
-    }
-
-    public int getWindowCapacity(){
-        return windowCapacity;
-    }
-
-
 
 }

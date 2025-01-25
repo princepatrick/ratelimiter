@@ -3,6 +3,7 @@ package com.example.ratelimiter.algorithm;
 import com.example.ratelimiter.util.BucketUtil;
 import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import com.example.ratelimiter.util.Token;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,6 +16,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class TokenBucket {
 
     int capacity;
+    @Getter
     Map<String, PriorityBlockingQueue<Token>> ipBasedTokenBucket;
     RateLimitingAlgorithm algorithm;
 
@@ -64,10 +66,6 @@ public class TokenBucket {
             }
         }
 
-    }
-
-    public Map<String, PriorityBlockingQueue<Token>> getIpBasedTokenBucker(){
-        return ipBasedTokenBucket;
     }
 
 }
