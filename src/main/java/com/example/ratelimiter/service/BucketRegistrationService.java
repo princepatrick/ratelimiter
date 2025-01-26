@@ -1,5 +1,7 @@
-package com.example.ratelimiter.util;
+package com.example.ratelimiter.service;
 
+import com.example.ratelimiter.util.RateLimitingAlgorithm;
+import com.example.ratelimiter.util.Token;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -9,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
 @Component
-public class BucketUtil {
+public class BucketRegistrationService {
 
 
     public <T> boolean registerIp( String ip, Map<String, T> ipBasedDataStruct, int capacity, RateLimitingAlgorithm algorithm ){

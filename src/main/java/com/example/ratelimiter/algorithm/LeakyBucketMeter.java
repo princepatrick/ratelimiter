@@ -1,8 +1,7 @@
 package com.example.ratelimiter.algorithm;
 
-import com.example.ratelimiter.util.BucketUtil;
+import com.example.ratelimiter.service.BucketRegistrationService;
 import com.example.ratelimiter.util.RateLimitingAlgorithm;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 public class LeakyBucketMeter {
 
     @Autowired
-    public BucketUtil bucketUtil;
+    public BucketRegistrationService bucketRegistrationService;
 
     int capacity;
     int currentLevel;
@@ -28,11 +27,11 @@ public class LeakyBucketMeter {
     }
 
     public boolean registerIp( String ipAddress ){
-        return bucketUtil.registerIp( ipAddress, ipBasedLeakyBucketMeter, capacity, algorithm );
+        return bucketRegistrationService.registerIp( ipAddress, ipBasedLeakyBucketMeter, capacity, algorithm );
     }
 
     public void deregisterIp( String ipAddress ){
-        bucketUtil.deRegisterIp(ipAddress, ipBasedLeakyBucketMeter);
+        bucketRegistrationService.deRegisterIp(ipAddress, ipBasedLeakyBucketMeter);
     }
 
     @Scheduled( cron = "*/5 * * * * ?")

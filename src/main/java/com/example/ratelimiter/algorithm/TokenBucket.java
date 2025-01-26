@@ -1,6 +1,6 @@
 package com.example.ratelimiter.algorithm;
 
-import com.example.ratelimiter.util.BucketUtil;
+import com.example.ratelimiter.service.BucketRegistrationService;
 import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import com.example.ratelimiter.util.Token;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class TokenBucket {
     RateLimitingAlgorithm algorithm;
 
     @Autowired
-    public BucketUtil bucketUtil;
+    public BucketRegistrationService bucketRegistrationService;
 
     public TokenBucket(int threshold, RateLimitingAlgorithm algorithm ){
         this.capacity = threshold;
@@ -30,11 +30,11 @@ public class TokenBucket {
     }
 
     public boolean registerIp( String ip ){
-        return bucketUtil.registerIp( ip, ipBasedTokenBucket, this.capacity, algorithm );
+        return bucketRegistrationService.registerIp( ip, ipBasedTokenBucket, this.capacity, algorithm );
     }
 
     public void deregisterIp( String ip ){
-        bucketUtil.deRegisterIp( ip, this.ipBasedTokenBucket );
+        bucketRegistrationService.deRegisterIp( ip, this.ipBasedTokenBucket );
     }
 
     @Scheduled( cron = "*/30 * * * * ?" )

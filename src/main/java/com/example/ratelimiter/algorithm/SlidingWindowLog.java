@@ -1,6 +1,6 @@
 package com.example.ratelimiter.algorithm;
 
-import com.example.ratelimiter.util.BucketUtil;
+import com.example.ratelimiter.service.BucketRegistrationService;
 import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class SlidingWindowLog {
 
     @Autowired
-    BucketUtil bucketUtil;
+    BucketRegistrationService bucketRegistrationService;
 
     Map<String, PriorityBlockingQueue<LocalDateTime>> ipBasedSlidingWindowLog;
     int capacity;
@@ -30,7 +30,7 @@ public class SlidingWindowLog {
     }
 
     public boolean registerIp( String ipAddress ){
-        return bucketUtil.registerIp( ipAddress, ipBasedSlidingWindowLog, capacity, algorithm );
+        return bucketRegistrationService.registerIp( ipAddress, ipBasedSlidingWindowLog, capacity, algorithm );
     }
 
     public void deRegisterIp( String ipAddress ){
