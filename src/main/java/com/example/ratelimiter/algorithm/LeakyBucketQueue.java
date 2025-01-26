@@ -11,6 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
 
+/*
+ * The implementation algorithm for the Leaky Bucket Queue. The registration flows are handled by the
+ * BucketRegistrationService service. They define the necessary data structures - a bucket that holds the requests.
+ * A cron job is scheduled at every 5 seconds to search for any pending request in the bucket and process it
+ * (ie remove the token from the queue)
+ * */
 public class LeakyBucketQueue {
 
     int capacity;

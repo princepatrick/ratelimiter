@@ -9,7 +9,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/*
+* The implementation algorithm for the FixedWindowCounter. The registration flows are handled by the
+* BucketRegistrationService service. They define the necessary data structures for the time window based counter
+* */
 @Slf4j
 public class FixedWindowCounter {
 
@@ -18,7 +21,7 @@ public class FixedWindowCounter {
 
 
     int windowCapacity;
-    Map<String, Map<String, Integer>> ipBasedFixedWindowCounter;
+    Map<String, Map<Long, Integer>> ipBasedFixedWindowCounter;
     RateLimitingAlgorithm algorithm;
 
     public FixedWindowCounter(int windowCapacity, RateLimitingAlgorithm algorithm) {
@@ -39,7 +42,7 @@ public class FixedWindowCounter {
         return windowCapacity;
     }
 
-    public Map<String, Map<String, Integer>> getIpBasedFixedWindowCounter(){
+    public Map<String, Map<Long, Integer>> getIpBasedFixedWindowCounter(){
         return getIpBasedFixedWindowCounter();
     }
 

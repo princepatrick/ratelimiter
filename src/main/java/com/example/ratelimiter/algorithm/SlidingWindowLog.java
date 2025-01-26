@@ -11,6 +11,11 @@ import java.util.Map;
 import java.time.LocalDateTime;
 import java.util.concurrent.PriorityBlockingQueue;
 
+/*
+ * The implementation algorithm for the Sliding Window Log. The registration flows are handled by the
+ * BucketRegistrationService service. They define the necessary data structures - a log that holds the requests
+ * with the timestamps. This helps in locating and managing the older requests based on the threshold time.
+ * */
 @Getter
 public class SlidingWindowLog {
 

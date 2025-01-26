@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/*
+* The Class is used to define the structure of Token. This is used for the TokenBucket and LeakyBucket implementations
+* */
 @Data
 @NoArgsConstructor
 //@AllArgsConstructor

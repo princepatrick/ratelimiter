@@ -17,6 +17,10 @@ import jakarta.servlet.ServletResponse;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
+/*
+ * Leaky Bucket Queue Filter implementation - checks the rate level limit validity, it processes if rate limit is available
+ * and throws the runtimeexception if the rate level limit exceeds
+ * */
 @Component
 @ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketqueue")
 public class LeakyBucketQueueFilter implements Filter {

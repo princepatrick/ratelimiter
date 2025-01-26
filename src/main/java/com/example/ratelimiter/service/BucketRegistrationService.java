@@ -2,6 +2,7 @@ package com.example.ratelimiter.service;
 
 import com.example.ratelimiter.util.RateLimitingAlgorithm;
 import com.example.ratelimiter.util.Token;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -10,15 +11,33 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
+/*
+* A common implementation of the ip address registration flow for each Rate limiting algorithm
+* */
 @Component
 public class BucketRegistrationService {
 
+    @Autowired
+    IpBasedRedisCounterService ipBasedRedisCounterService;
+
+    /*
+      @param ip - The ip address of the current user request
+      @param ipBasedDataStruct - A generic based implementation of the Map data structure that stores the information
+            based on the ip address
+      @param capacity - The capacity permitted with the data structure associated with the ip address
+      @param algorithm - The algorithm used by the Ratelimiter
+      @return true if the registration is successful, false if unsuccessful
+    * The method contains the central functionality of the Registration service depending on the implementation
+    * All the implementations use a local Map based flow except for the Sliding Window Counter implementation that
+    * uses a Redis based implementation
+    * */
 
     public <T> boolean registerIp( String ip, Map<String, T> ipBasedDataStruct, int capacity, RateLimitingAlgorithm algorithm ){
 
         System.out.println("Running registerIp() in BucketUtil");
 
-        if( ipBasedDataStruct != null && ipBasedDataStruct.containsKey(ip) ){
+        if( (algorithm == RateLimitingAlgorithm.SLIDING_WINDOW_COUNTER && ipBasedRedisCounterService.checkKeyExistsInCounterMap(ip) )
+        || ( algorithm == RateLimitingAlgorithm.SLIDING_WINDOW_COUNTER && ipBasedDataStruct != null && ipBasedDataStruct.containsKey(ip)) ){
 
             System.out.println("The IP Address is already present in the TokenBucket");
             return false;
@@ -46,7 +65,7 @@ public class BucketRegistrationService {
                     }
             );
 
-
+            //The flow diverges depending on the Rate limiting algorithm in this switch statement
             switch( algorithm ){
                 case TOKEN_BUCKET :
 
@@ -106,14 +125,18 @@ public class BucketRegistrationService {
 
                 case SLIDING_WINDOW_COUNTER:
 
-                    Map<String, Map<Long, Integer>> ipBasedSlidingWindowCounter = ( Map<String, Map<Long, Integer>>) ipBasedDataStruct;
-                    ipBasedSlidingWindowCounter.put( ip, Collections.synchronizedMap( new HashMap<>() ) );
+//                    Map<String, Map<Long, Integer>> ipBasedSlidingWindowCounter = ( Map<String, Map<Long, Integer>>) ipBasedDataStruct;
+//                    ipBasedSlidingWindowCounter.put( ip, Collections.synchronizedMap( new HashMap<>() ) );
 
                     System.out.println("Retrieving the current window(minute) from the current time");
                     Long currentMinute = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) / 60;
 
                     System.out.println("Inserting the local date time window (minute) into the queue");
-                    ipBasedSlidingWindowCounter.get( ip ).put( currentMinute, 1 );
+//                    ipBasedSlidingWindowCounter.get( ip ).put( currentMinute, 1 );
+                    Map<Long, Integer> slidingWindowCounterMap = new HashMap<>();
+                    slidingWindowCounterMap.put( currentMinute, 1 );
+
+                    ipBasedRedisCounterService.saveIpBasedSlidingWindowCounterMap( ip, slidingWindowCounterMap );
 
                     break;
 
@@ -123,14 +146,17 @@ public class BucketRegistrationService {
 
             }
 
-
-
-
             return true;
         }
 
     }
 
+    /*
+      @param ip - The ip address of the current user request
+      @param ipBasedTokenBucket - A generic based implementation of the Map data structure that stores the information
+            based on the ip address
+    * A common implementation of the expulsion of the ipaddress from the data storage
+    * */
     public <T> void deRegisterIp( String ip, Map< String, T> ipBasedTokenBucket ){
         ipBasedTokenBucket.remove( ip );
     }

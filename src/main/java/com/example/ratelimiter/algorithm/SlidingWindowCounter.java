@@ -8,6 +8,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * The implementation algorithm for the Sliding Window Counter. The registration flows are handled by the
+ * BucketRegistrationService service. They define the necessary data structures for the time window based counter
+ * that is dependent on the current sliding window of time limit (60 seconds/minute in our case).
+ * */
 public class SlidingWindowCounter {
 
     @Autowired

@@ -9,6 +9,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * The implementation algorithm for the Leaky Bucket Meter. The registration flows are handled by the
+ * BucketRegistrationService service. They define the necessary counter variable to hold the number of requests.
+ * A cron job is scheduled at every 5 seconds to search for any pending request in the bucket and process it
+ * (ie decrement the counter of the request)
+ * */
 public class LeakyBucketMeter {
 
     @Autowired

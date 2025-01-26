@@ -24,6 +24,10 @@ import jakarta.servlet.ServletResponse;
 //import javax.servlet.Filter;
 //import javax.servlet.FilterChain;
 
+/*
+ * Token Bucket Filter implementation - checks the rate level limit validity, it processes if rate limit is available
+ * and throws the runtimeexception if the rate level limit exceeds
+ * */
 @Component
 @ConditionalOnProperty(name = "filter.type", havingValue = "token")
 @Slf4j

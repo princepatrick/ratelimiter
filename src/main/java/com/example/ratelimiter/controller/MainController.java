@@ -4,6 +4,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/*
+* A simple Rest Controller to hanlde REST API calls - This was implemented for the Task 0 of the challenge.
+* */
 @RestController
 @RequestMapping("/")
 public class MainController {

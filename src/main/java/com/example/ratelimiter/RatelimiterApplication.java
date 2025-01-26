@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/*
+* The class is the starting point of the implementation.
+* The code creates the @Bean for each Rate limiting algorithm implementation along with the necessary data structures
+* and adds it to the SpringContext.
+* */
 @SpringBootApplication
 @ComponentScan({"com.example.ratelimiter"})
 @EnableScheduling

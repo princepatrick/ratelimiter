@@ -6,18 +6,32 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/*
+* The service class for the Leaky Bucket Meter algorithm
+* The service class checks the ip address registration, attempts to add the new request
+* and blocks if the rate limit is reached
+* */
 @Component
 public class LeakyBucketMeterService {
 
     @Autowired
     LeakyBucketMeter leakyBucketMeter;
 
+    /**
+     * @param ipAddress - the ipaddress of the user's device derived from the request
+     * The algorithm uses a Map<String, Integer> based data structure with the data storage as follows
+     * Map<IP_ADDRESS, COUNTER_OF_REQUESTS_IN_PROCESS> The rate limiting implementation merely uses a counter
+     * instead of storing the process or information of the process to be stored. This saves a lot on the
+     * processing time and data storage space.
+     */
     public void checkValidity( String ipAddress ){
 
         boolean justRegistered = leakyBucketMeter.registerIp( ipAddress );
 
         Map<String, Integer> ipBasedLeakyBucketMeter = leakyBucketMeter.getIpBasedLeakyBucketMeter();
 
+        //The Leaky Bucket Meter uses a variable "currentFilledRequests" to maintain the counter of the
+        // completed requests instead of using a data structure.
         int currentFilledRequests = ipBasedLeakyBucketMeter.get(ipAddress);
 
         if( currentFilledRequests < leakyBucketMeter.getCapacity()

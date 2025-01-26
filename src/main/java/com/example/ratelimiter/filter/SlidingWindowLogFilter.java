@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/*
+ * Sliding Window Log Filter implementation - checks the rate level limit validity, it processes if rate limit is available
+ * and throws the runtimeexception if the rate level limit exceeds
+ * */
 @Component
 @ConditionalOnProperty( name = "filter.type", havingValue = "slidingWindowLog")
 public class SlidingWindowLogFilter implements Filter {

@@ -12,6 +12,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
+/*
+ * The implementation algorithm for the Token Bucket Queue. The registration flows are handled by the
+ * BucketRegistrationService service. They define the necessary data structures - a bucket that holds the tokens to
+ * be used to process the requests.
+ * A cron job is scheduled at every 30 seconds to refill the tokens into the bucket to facilitate future request
+ * calls.
+ * */
 @Slf4j
 public class TokenBucket {
 

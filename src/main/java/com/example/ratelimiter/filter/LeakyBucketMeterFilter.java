@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/*
+ * Leaky Bucket Meter Filter implementation - checks the rate level limit validity, it processes if rate limit is available
+ * and throws the runtimeexception if the rate level limit exceeds
+ * */
 @Component
 @ConditionalOnProperty( name = "filter.type", havingValue = "leakybucketmeter")
 public class LeakyBucketMeterFilter implements Filter {

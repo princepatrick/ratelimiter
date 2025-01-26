@@ -9,17 +9,34 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
+/*
+ * The service class for the Sliding Window Counter algorithm
+ * The service class checks the ip address registration, attempts to add the new request
+ * and blocks if the rate limit is reached
+ * */
 @Component
 public class SlidingWindowCounterService {
 
     @Autowired
     SlidingWindowCounter slidingWindowCounter;
 
+    @Autowired
+    IpBasedRedisCounterService ipBasedRedisCounterService;
+
+    /**
+     * @param ipAddress - the ipaddress of the user's device derived from the request
+     * The algorithm uses a Map<String, Map<Long, Integer>> based data structure with the data storage
+     * as follows Map<IP_ADDRESS, Map<WINDOW_DEFINED_IN_MINUTES, COUNTER_OF_REQUESTS_TO_BE_PROCESSED>>.
+     * The data structure used is a Redis based centralized counter, that helps in handling requests in a
+     * distributed server setup.
+     * The rate limiting implementation merely uses a counter instead of storing the process or information of
+     * the process to be stored. This saves a lot on the processing time and data storage space.
+     */
     public void checkRateLimits( String ipAddress ){
 
         boolean justRegistered = slidingWindowCounter.registerIp( ipAddress );
 
-        Map< String, Map<Long, Integer > > ipBasedSlidingWindowCounter = slidingWindowCounter.getIpBasedSlidingWindowCounter();
+//        Map< String, Map<Long, Integer > > ipBasedSlidingWindowCounter = ipBasedRedisCounterService.getIpBasedSlidingWindowCounterMap(ipAddress);
 
         int windowCapacity = slidingWindowCounter.getWindowCapacity();
 
@@ -31,11 +48,15 @@ public class SlidingWindowCounterService {
             throw new RuntimeException("Too many requests have been processed");
         }
 
-        if( !ipBasedSlidingWindowCounter.containsKey( ipAddress ) ){
+        if( !ipBasedRedisCounterService.checkKeyExistsInCounterMap( ipAddress ) ){
             System.out.println("The user has not previously reached out to the API service.");
         } else {
 
-            Map< Long, Integer > slidingWindowCounterMap = ipBasedSlidingWindowCounter.get( ipAddress );
+            Map< Long, Integer > slidingWindowCounterMap = ipBasedRedisCounterService.getIpBasedSlidingWindowCounterMap( ipAddress );
+
+            //The algorithm tries to predict the current rate limit factor based on the number of requests in the
+            //current window, and gets the ratio of the requests from the previous window
+            //This helps in monitoring a rapid rise of requests during the transition between the windows
             Long currentSeconds = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
             Long currentMinute = currentSeconds / 60;
 
