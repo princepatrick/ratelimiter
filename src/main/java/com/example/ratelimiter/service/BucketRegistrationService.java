@@ -125,16 +125,13 @@ public class BucketRegistrationService {
 
                 case SLIDING_WINDOW_COUNTER:
 
-//                    Map<String, Map<Long, Integer>> ipBasedSlidingWindowCounter = ( Map<String, Map<Long, Integer>>) ipBasedDataStruct;
-//                    ipBasedSlidingWindowCounter.put( ip, Collections.synchronizedMap( new HashMap<>() ) );
-
                     System.out.println("Retrieving the current window(minute) from the current time");
                     Long currentMinute = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) / 60;
+                    String currMinuteStr = String.valueOf(currentMinute);
 
                     System.out.println("Inserting the local date time window (minute) into the queue");
-//                    ipBasedSlidingWindowCounter.get( ip ).put( currentMinute, 1 );
-                    Map<Long, Integer> slidingWindowCounterMap = new HashMap<>();
-                    slidingWindowCounterMap.put( currentMinute, 1 );
+                    Map<String, Integer> slidingWindowCounterMap = new HashMap<>();
+                    slidingWindowCounterMap.put( currMinuteStr, 1 );
 
                     ipBasedRedisCounterService.saveIpBasedSlidingWindowCounterMap( ip, slidingWindowCounterMap );
 

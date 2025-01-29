@@ -40,35 +40,35 @@ public class LeakyBucketMeter {
         bucketRegistrationService.deRegisterIp(ipAddress, ipBasedLeakyBucketMeter);
     }
 
-    @Scheduled( cron = "*/5 * * * * ?")
-    public void performRequest(){
-
-        if( ipBasedLeakyBucketMeter == null ){
-            System.out.println("The Leaky Bucket Meter is Null");
-            return;
-        }
-
-        //Check if the ipBasedLeakyBucketMeter has any ip address that contains any unprocessed requests
-        if( ipBasedLeakyBucketMeter.isEmpty() ){
-            System.out.println("We do not have any requests called to perform");
-        } else {
-
-            //Loop through each ip address
-            for( Map.Entry<String, Integer> mItr : ipBasedLeakyBucketMeter.entrySet()  ) {
-                int pendingRequestCount = mItr.getValue();
-
-                if( pendingRequestCount > 0 ) {
-                    //If there are any unprocessed requests, if so reduce the counter - indicating that the process is completed
-                    System.out.println("The request is completed");
-                    pendingRequestCount--;
-                    mItr.setValue(pendingRequestCount);
-                } else {
-                    //If an ipaddress does not have any pending requests (ie the value is 0), then skip the process
-                    System.out.println("We do not have any requests in the bucket to perform for the ip address" + mItr.getKey() );
-                }
-            }
-        }
-    }
+//    @Scheduled( cron = "*/5 * * * * ?")
+//    public void performRequest(){
+//
+//        if( ipBasedLeakyBucketMeter == null ){
+//            System.out.println("The Leaky Bucket Meter is Null");
+//            return;
+//        }
+//
+//        //Check if the ipBasedLeakyBucketMeter has any ip address that contains any unprocessed requests
+//        if( ipBasedLeakyBucketMeter.isEmpty() ){
+//            System.out.println("We do not have any requests called to perform");
+//        } else {
+//
+//            //Loop through each ip address
+//            for( Map.Entry<String, Integer> mItr : ipBasedLeakyBucketMeter.entrySet()  ) {
+//                int pendingRequestCount = mItr.getValue();
+//
+//                if( pendingRequestCount > 0 ) {
+//                    //If there are any unprocessed requests, if so reduce the counter - indicating that the process is completed
+//                    System.out.println("The request is completed");
+//                    pendingRequestCount--;
+//                    mItr.setValue(pendingRequestCount);
+//                } else {
+//                    //If an ipaddress does not have any pending requests (ie the value is 0), then skip the process
+//                    System.out.println("We do not have any requests in the bucket to perform for the ip address" + mItr.getKey() );
+//                }
+//            }
+//        }
+//    }
 
     public int getCapacity(){
         return capacity;

@@ -44,36 +44,36 @@ public class TokenBucket {
         bucketRegistrationService.deRegisterIp( ip, this.ipBasedTokenBucket );
     }
 
-    @Scheduled( cron = "*/30 * * * * ?" )
-    public void addTokenIntoBucket(){
-
-        //Check if ipBasedTokenBucket is empty - Then no IP addresses have been registered, hence, we cannot insert a token into the bucket
-        if( ipBasedTokenBucket.isEmpty() ){
-//            log.info("The Token Bucket is empty of ip addresses. Hence we cannot insert tokens.");
-            System.out.println("The Token Bucket is empty of ip addresses. Hence we cannot insert tokens.");
-        } else {
-            //If the ipBasedTokenBucket is present - then iterate through each of the ipaddress's Token Bucket
-//            log.info("The token bucket is available, and we can iterate through the ipaddress ");
-            System.out.println("The token bucket is available, and we can iterate through the ipaddress ");
-
-            for( Map.Entry<String, PriorityBlockingQueue<Token>> ipBasedQueue : ipBasedTokenBucket.entrySet()){
-                PriorityBlockingQueue<Token> queue = ipBasedQueue.getValue();
-
-                if( queue.size() == this.capacity ){
-                    //For each ipaddress - check the corresponding Token bucket's capacity - if full ignore
-//                    log.info("The bucket has reached it's capacity. Please ignore.");
-                    System.out.println("The bucket has reached it's capacity. Please ignore.");
-                } else {
-                    //If the bucket is having vacancy, then insert a single token
-//                    log.info("The bucket has a vacant space. Please insert a single token");
-                    System.out.println("The bucket has a vacant space. Please insert a single token");
-
-                    queue.add( new Token( UUID.randomUUID().toString(), LocalDateTime.now() ) );
-                }
-            }
-        }
-
-    }
+//    @Scheduled( cron = "*/30 * * * * ?" )
+//    public void addTokenIntoBucket(){
+//
+//        //Check if ipBasedTokenBucket is empty - Then no IP addresses have been registered, hence, we cannot insert a token into the bucket
+//        if( ipBasedTokenBucket.isEmpty() ){
+////            log.info("The Token Bucket is empty of ip addresses. Hence we cannot insert tokens.");
+//            System.out.println("The Token Bucket is empty of ip addresses. Hence we cannot insert tokens.");
+//        } else {
+//            //If the ipBasedTokenBucket is present - then iterate through each of the ipaddress's Token Bucket
+////            log.info("The token bucket is available, and we can iterate through the ipaddress ");
+//            System.out.println("The token bucket is available, and we can iterate through the ipaddress ");
+//
+//            for( Map.Entry<String, PriorityBlockingQueue<Token>> ipBasedQueue : ipBasedTokenBucket.entrySet()){
+//                PriorityBlockingQueue<Token> queue = ipBasedQueue.getValue();
+//
+//                if( queue.size() == this.capacity ){
+//                    //For each ipaddress - check the corresponding Token bucket's capacity - if full ignore
+////                    log.info("The bucket has reached it's capacity. Please ignore.");
+//                    System.out.println("The bucket has reached it's capacity. Please ignore.");
+//                } else {
+//                    //If the bucket is having vacancy, then insert a single token
+////                    log.info("The bucket has a vacant space. Please insert a single token");
+//                    System.out.println("The bucket has a vacant space. Please insert a single token");
+//
+//                    queue.add( new Token( UUID.randomUUID().toString(), LocalDateTime.now() ) );
+//                }
+//            }
+//        }
+//
+//    }
 
     public int getCapacity(){
         return capacity;

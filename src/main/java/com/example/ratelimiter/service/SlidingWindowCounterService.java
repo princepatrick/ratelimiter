@@ -36,8 +36,6 @@ public class SlidingWindowCounterService {
 
         boolean justRegistered = slidingWindowCounter.registerIp( ipAddress );
 
-//        Map< String, Map<Long, Integer > > ipBasedSlidingWindowCounter = ipBasedRedisCounterService.getIpBasedSlidingWindowCounterMap(ipAddress);
-
         int windowCapacity = slidingWindowCounter.getWindowCapacity();
 
         if( justRegistered && windowCapacity >= 1 ) {
@@ -52,7 +50,7 @@ public class SlidingWindowCounterService {
             System.out.println("The user has not previously reached out to the API service.");
         } else {
 
-            Map< Long, Integer > slidingWindowCounterMap = ipBasedRedisCounterService.getIpBasedSlidingWindowCounterMap( ipAddress );
+            Map< String, Integer > slidingWindowCounterMap = ipBasedRedisCounterService.getIpBasedSlidingWindowCounterMap( ipAddress );
 
             //The algorithm tries to predict the current rate limit factor based on the number of requests in the
             //current window, and gets the ratio of the requests from the previous window
@@ -64,21 +62,31 @@ public class SlidingWindowCounterService {
             Long prevMinute = currentMinute - 1;
             int currentCount = 0, prevCount = 0;
 
-            if( slidingWindowCounterMap.containsKey( currentMinute ) ){
-                currentCount = slidingWindowCounterMap.get( currentMinute );
+            String currentMinuteStr = String.valueOf( currentMinute );
+            String prevMinuteStr = String.valueOf(prevMinute);
+
+            System.out.println( "The currentMinute is " + currentMinute + " and prevMinute is " + prevMinute );
+            if( slidingWindowCounterMap.containsKey( currentMinuteStr ) ){
+                currentCount = slidingWindowCounterMap.get( currentMinuteStr );
+                System.out.println("The currentMinute is " + currentMinute + " and the currentCount is " + currentCount );
             }
 
-            if( slidingWindowCounterMap.containsKey( prevMinute ) ){
-                prevCount = slidingWindowCounterMap.get( prevMinute );
+            if( slidingWindowCounterMap.containsKey( prevMinuteStr ) ){
+                prevCount = slidingWindowCounterMap.get( prevMinuteStr );
+                System.out.println("The prevMinute is " + prevMinute + " and the currentCount is " + prevCount );
             }
 
             float currentRequestCount = (float) currentCount + (prevCount * ratio);
 
-            System.out.println("The currentRequestCount is : " + currentRequestCount + " and the windowCapacity is " + windowCapacity );
+            System.out.println("The existing count of requests is : " + currentRequestCount
+                    + " and the windowCapacity is " + windowCapacity );
 
             if( currentRequestCount + 1 <= (float) windowCapacity ){
                 System.out.println("The request is valid and could be processed!!");
-                slidingWindowCounterMap.put( currentMinute, currentCount + 1 );
+
+                slidingWindowCounterMap.put( currentMinuteStr, currentCount + 1 );
+                System.out.println("The new updated value is " + slidingWindowCounterMap.get( currentMinute ));
+                ipBasedRedisCounterService.saveIpBasedSlidingWindowCounterMap( ipAddress, slidingWindowCounterMap );
             } else {
                 System.out.println("The request has crossed the limits of the rate limiter");
                 throw new RuntimeException("Too many requests have been processed");

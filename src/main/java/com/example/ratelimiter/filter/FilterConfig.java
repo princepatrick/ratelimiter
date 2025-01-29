@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 * After changing the filter name in the application.properties based on the following options:
 * [token, leakybucketqueue, leakybucketmeter, fixedWindowCounter, slidingWindowLog, slidingWindowCounter]
 * We need to specify the apt Filter class in the FilterRegistrationBean method
-* The filter registration sets up the correct bean at line 21 and this is compared with all the filter
+* The filter registration sets up the correct bean and this is compared with all the filter
 * implementation and picks the one that matches it.
 * */
 @Configuration
