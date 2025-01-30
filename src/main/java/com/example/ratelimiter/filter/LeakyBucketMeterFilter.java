@@ -15,7 +15,7 @@ import java.io.IOException;
  * and throws the runtimeexception if the rate level limit exceeds
  * */
 @Component
-@ConditionalOnProperty( name = "filter.type", havingValue = "leakybucketmeter")
+@ConditionalOnProperty( name = "filter.type", havingValue = "leakyBucketMeter")
 public class LeakyBucketMeterFilter implements Filter {
 
     @Autowired

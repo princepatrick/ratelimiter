@@ -29,7 +29,7 @@ import jakarta.servlet.ServletResponse;
  * and throws the runtimeexception if the rate level limit exceeds
  * */
 @Component
-@ConditionalOnProperty(name = "filter.type", havingValue = "token")
+@ConditionalOnProperty(name = "filter.type", havingValue = "tokenBucket")
 @Slf4j
 public class TokenBucketFilter implements Filter {
 

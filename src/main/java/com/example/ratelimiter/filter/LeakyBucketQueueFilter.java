@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * and throws the runtimeexception if the rate level limit exceeds
  * */
 @Component
-@ConditionalOnProperty(name = "filter.type", havingValue = "leakybucketqueue")
+@ConditionalOnProperty(name = "filter.type", havingValue = "leakyBucketQueue")
 public class LeakyBucketQueueFilter implements Filter {
 
     @Autowired
