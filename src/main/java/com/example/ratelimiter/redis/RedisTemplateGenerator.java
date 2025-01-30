@@ -1,14 +1,9 @@
 package com.example.ratelimiter.redis;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -19,7 +14,7 @@ import java.util.Map;
 * and serialization options.
 * */
 @Configuration
-public class redisTemplateGenerator {
+public class RedisTemplateGenerator {
 
     /**
      * @param redisConnnectionFactory - Used to set up redis connection and stores the critical authentication
