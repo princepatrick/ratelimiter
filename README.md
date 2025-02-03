@@ -8,16 +8,23 @@ A basic architecture of the Rate Limiter flow with the common algorithms
 
 ## Coding Challenge By John Crickett
 This was implemented as a solution to one of the coding challenges by John Crickett [CodingChallengesByJohnCrickett] https://codingchallenges.substack.com/p/coding-challenge-27-rate-limiter
-Please let me know if you find suggestions and improvement in the implementation via Linkedin as it would help me improve in my future projects.
+Please let me know if you find suggestions and improvement in the implementation via Linkedin [MyLinkedInProfile] https://www.linkedin.com/in/prince-patrick-anand-victor/ as it would help me improve in my future projects.
 
 ## Local Software Configuration
 Oracle OpenJDK 22.0.1
+
+## Major Spring boot dependencies actively used:
+Spring boot starter web: It is used to handle all the web based service requests and basic web integration
+Spring boot starter data redis: It is used to integrate and manager the redis key-value store from the spring boot application
+Spring boot auto configure: This is used for auto configuring the spring boot app based on the provided dependencies
+
+Other unused dependencies Spring boot starter test, Lombok etc., would be used for future tasks in the project and this section would be updated respectively.
 
 ## Steps to run the application
 - Clone this repository
 - In the application.properties, change the filter.type into [ tokenBucket, leakyBucketQueue, leakyBucketMeter, fixedWindowCounter, slidingWindowLog, slidingWindowCounter ]
 - Change the class names in the FilterConfig to suit the implementation you want to run.
-- If you are using one of the Token Bucket, Leaky Bucket Meter and Leaky Bucket Queue, please scheduled/cron jobs in respective implementation in the com.example.ratelimiter.algorithm
+- If you are using one of the Token Bucket, Leaky Bucket Meter and Leaky Bucket Queue, please uncomment the scheduled/cron jobs in respective implementation in the com.example.ratelimiter.algorithm
 
 # Rate Limiting Algorithms:
 ## Token Bucket:
